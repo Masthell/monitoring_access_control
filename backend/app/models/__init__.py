@@ -1,3 +1,8 @@
-from .user import User, Base
+from sqlalchemy.ext.declarative import declarative_base
 
-__all__ = ["User", "Base"]
+Base = declarative_base()
+
+from .user import User
+from .ticket import Ticket
+
+__all__ = ["Base", "User", "Ticket"]
