@@ -1,24 +1,16 @@
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from app.models.user import Base  # Импортируем Base из моделей
+from app.models.user import Base
 
-# URL базы данных из переменных окружения
-DATABASE_URL = "mysql+pymysql://root:#mila2008@localhost:3306/support_db"
+# Для MySQL используйте asyncmy вместо pymysql
+DATABASE_URL = "mysql+asyncmy://root:#mila2008@localhost:3306/support_db"
 
-# Движок БД
-engine = create_engine(DATABASE_URL)
+engine = create_async_engine(DATABASE_URL, echo=True)
+AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-# Фабрика сессий
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Функция для получения сессии БД
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-# Создание таблиц (для начальной настройки)
-def create_tables():
-    Base.metadata.create_all(bind=engine)
+async def get_db():
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+        finally:
+            await session.close()

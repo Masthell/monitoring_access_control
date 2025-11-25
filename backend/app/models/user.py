@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.orm import relationship
-from .ticket import Ticket
 from . import Base  # Импортируем Base из __init__.py
 
 class User(Base):
@@ -14,5 +13,6 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
-    # Связь с тикетами (множественное число!)
+    # Уберите импорт Ticket здесь, он создает циклическую зависимость
+    # relationship настраивается строкой
     tickets = relationship("Ticket", back_populates="user")
