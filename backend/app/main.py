@@ -1,60 +1,83 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends
+from sqlalchemy import text  # ← ДОБАВЬ ЭТОТ ИМПОРТ
 from sqlalchemy.orm import Session
-from app import models, schemas
+from app.core.config import settings
 from app.database import get_db, engine
 
-# Создаем таблицы
-models.Base.metadata.create_all(bind=engine)
-
 app = FastAPI(
-    title="Support Dashboard API",
-    description="API для системы поддержки пользователей",
+    title="Support System API",
+    description="API for Support Dashboard",
     version="1.0.0"
 )
 
-# Простой эндпоинт для проверки
+
 @app.get("/")
-def read_root():
+async def root():
     return {"message": "Welcome to Support Dashboard API"}
 
-# Эндпоинт для получения всех пользователей
-@app.get("/users/", response_model=list[schemas.UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    users = db.query(models.User).all()
-    return users
+@app.get("/info")
+async def info():
+    """Информация  настройках (безопасно)"""
+    return {
+        "app_name": "Support Dashboard",
+        "algorithm": settings.ALGORITHM,
+        "token_expire_minutes": settings.ACCESS_TOKEN_EXPIRE_MINUTES,
+        "status": "running"
+    }
 
-# Эндпоинт для создания пользователя
-@app.post("/users/", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # Проверяем, существует ли пользователь с таким email
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
-    if db_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
-        )
-    
-    # Создаем нового пользователя (пока без хэширования пароля)
-    db_user = models.User(
-        email=user.email,
-        password=user.password,  # В будущем нужно хэшировать!
-        full_name=user.full_name,
-        role=user.role
-    )
-    
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    
-    return db_user
+@app.get("/test-db")
+async def test_db():
+    """Тест подключения к БД"""
+    try:
+        with engine.connect() as conn:
+            # ИСПРАВЛЕНО: используем text() для SQL выражений
+            result = conn.execute(text("SELECT 1"))
+            return {
+                "status": "✅ Database connected successfully",
+                "database": "MySQL",
+                "test_query": "SELECT 1 - OK",
+                "connection_test": True
+            }
+    except Exception as e:
+        return {
+            "status": "❌ Database connection failed",
+            "error": str(e)
+        }
 
-# Эндпоинт для получения пользователя по ID
-@app.get("/users/{user_id}", response_model=schemas.UserResponse)
-def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    return user
+@app.get("/health")
+async def health_check(db: Session = Depends(get_db)):
+    """Полная проверка здоровья приложения"""
+    try:
+        # ИСПРАВЛЕНО: используем text() для SQL выражений
+        db.execute(text("SELECT 1"))
+        
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "environment": "development",
+            "timestamp": "2024-01-01T00:00:00Z"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "database": "disconnected",
+            "error": str(e)
+        }
+
+@app.get("/api/status")
+async def api_status():
+    return {
+        "api": "Support Dashboard API",
+        "version": "1.0",
+        "status": "active"
+    }
+
+@app.get("/config-test")
+async def config_test():
+    """Тест загрузки конфигурации (безопасный)"""
+    return {
+        "algorithm": settings.ALGORITHM,
+        "token_expire_minutes": settings.ACCESS_TOKEN_EXPIRE_MINUTES,
+        "secret_key_length": len(settings.SECRET_KEY),
+        "database_configured": True if settings.DATABASE_URL else False
+    }

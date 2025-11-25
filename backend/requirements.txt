@@ -14,3 +14,7 @@ psycopg==3.1.10
 pydantic-settings==2.0.3
 asyncpg==0.28.0
 psycopg==3.1.10
+
+
+пип инсталлы
+pip install python-dotenv pydantic-settings
