@@ -1,16 +1,16 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models.user import Base
+from app.models import Base
 
-# Для MySQL используйте asyncmy вместо pymysql
-DATABASE_URL = "mysql+asyncmy://root:#mila2008@localhost:3306/support_db"
+# СИНХРОННАЯ версия с pymysql
+DATABASE_URL = "mysql+pymysql://root:#mila2008@localhost:3306/support_db"
 
-engine = create_async_engine(DATABASE_URL, echo=True)
-AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+engine = create_engine(DATABASE_URL, echo=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-async def get_db():
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
