@@ -21,3 +21,12 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):  # ← us
     db.commit()
     db.refresh(db_user)
     return db_user
+
+from app.core.dependencies import get_current_user
+
+@router.get("/users/me")
+def get_current_user_info(current_user: dict = Depends(get_current_user)):
+    return {
+        "message": "Это защищенный эндпоинт!",
+        "user_data": current_user
+    }
