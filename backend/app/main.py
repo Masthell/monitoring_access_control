@@ -89,3 +89,9 @@ from app.routers import users, tickets, auth
 
 app.include_router(users.router, prefix="/api")
 app.include_router(tickets.router, prefix="/api")
+
+from app.routers import users, tickets, auth  # ← добавить auth
+
+app.include_router(users.router, prefix="/api")
+app.include_router(tickets.router, prefix="/api") 
+app.include_router(auth.router, prefix="/auth")  # ← добавить эту строку
