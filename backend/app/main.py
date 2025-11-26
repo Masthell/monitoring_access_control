@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.database import get_db, engine
 
+
 app = FastAPI(
     title="Support System API",
     description="API for Support Dashboard",
@@ -81,3 +82,10 @@ async def config_test():
         "secret_key_length": len(settings.SECRET_KEY),
         "database_configured": True if settings.DATABASE_URL else False
     }
+
+
+# Подключаем роутеры
+from app.routers import users, tickets, auth
+
+app.include_router(users.router, prefix="/api")
+app.include_router(tickets.router, prefix="/api")
