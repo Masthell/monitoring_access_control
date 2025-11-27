@@ -8,7 +8,7 @@ from app.core.security import hash_password
 router = APIRouter()
 
 @router.post("/users", response_model=UserResponse)
-def create_user(user_data: UserCreate, db: Session = Depends(get_db)):  # ← user_data определена!
+def create_user(user_data: UserCreate, db: Session = Depends(get_db)):  
     hashed_password = hash_password(user_data.password)  
     
     db_user = User(
