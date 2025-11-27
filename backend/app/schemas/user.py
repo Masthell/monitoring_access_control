@@ -26,8 +26,13 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True  # Работа с ORM объектами
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    role: Optional[str] = None
 
 # Схема для аутентификации
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+

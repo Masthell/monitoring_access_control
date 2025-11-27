@@ -6,6 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import User  
 from sqlalchemy import select  
 from contextlib import asynccontextmanager
+from app.core.error_handlers import setup_exception_handlers
+from app.core.exceptions import InvalidTokenException 
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from app.core.security import verify_token
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,6 +26,9 @@ app = FastAPI(
     lifespan=lifespan,
     version="1.0.0"
 )
+
+setup_exception_handlers(app)
+
 
 # тестовый эндпоинт
 @app.get("/health")

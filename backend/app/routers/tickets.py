@@ -7,6 +7,7 @@ from app.models.user import User
 from app.schemas.ticket import TicketCreate, TicketResponse
 from app.core.dependencies import get_current_user
 from fastapi import Query
+from app.core.exceptions import TicketNotFoundException
 
 router = APIRouter()
 
@@ -73,7 +74,7 @@ async def get_ticket(
     ticket = result.scalar_one_or_none()
     
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise TicketNotFoundException()
     
     return {
         "id": ticket.id,
@@ -98,7 +99,7 @@ async def update_ticket(
     ticket = result.scalar_one_or_none()
     
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise TicketNotFoundException()
     
     if title is not None:
         ticket.title = title
@@ -128,7 +129,7 @@ async def delete_ticket(
     ticket = result.scalar_one_or_none()
     
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise TicketNotFoundException()
     
     await db.delete(ticket)  
     await db.commit() 
