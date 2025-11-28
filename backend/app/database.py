@@ -19,6 +19,7 @@ def create_async_database_url(database_url: str) -> str:
     
     return async_url
 
+# Создать асинхронный движок базы данных с объединением подключений
 async_database_url = create_async_database_url(settings.DATABASE_URL)
 
 engine = create_async_engine(

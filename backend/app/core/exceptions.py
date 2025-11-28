@@ -17,10 +17,6 @@ class UnauthorizedException(BaseAPIException):
     def __init__(self, detail: str = "Unauthorized", error_code: str = "UNAUTHORIZED"):
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail, error_code=error_code)
 
-class ForbiddenException(BaseAPIException):
-    """Доступ запрещен"""
-    def __init__(self, detail: str = "Forbidden", error_code: str = "FORBIDDEN"):
-        super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail, error_code=error_code)
 
 class BadRequestException(BaseAPIException):
     """Некорректный запрос"""
