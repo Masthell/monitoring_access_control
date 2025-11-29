@@ -1,70 +1,19 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 import "./App.css";
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login:", { email, password });
-  };
-
   return (
-    <div className="login-container">
-      <div className="sphere1"></div>
-      <div className="sphere2"></div>
-
-      <div className="login-content">
-        <div className="logo-section">
-          <img src="/vite.png" className="logo" alt="logo" />
-          <h1>support dashboard</h1>
-        </div>
-
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="input"
-              placeholder="E-mail"
-            />
-          </div>
-
-          <div className="form-group">
-            <div className="password-header"></div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="input"
-              placeholder="Password"
-            />
-          </div>
-
-          <button type="submit" className="login-button">
-            Войти
-          </button>
-        </form>
-
-        <div className="signup-section">
-          <p className="signup-text">
-            Don't have an account?{" "}
-            <a href="#" className="signup-link">
-              Sign up
-            </a>
-            <a href="#" className="forgot-link">
-              Forgot password?
-            </a>
-          </p>
-        </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} /> {/* По умолчанию логин */}
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
