@@ -1,42 +1,67 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Общие стили для всего приложения */
+* {
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #000000;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* background-image: url("/background.jpg");  */
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Сферы - общие стили */
+.sphere1,
+.sphere2 {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sphere1 {
+  width: 254.72px;
+  height: 254.72px;
+  background: url("/sphere3.svg") no-repeat center center;
+  left: 243px;
+  top: -90px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.sphere2 {
+  width: 137.39px;
+  height: 137.39px;
+  background: url("/sphere1.svg") no-repeat center center;
+  right: 243px;
+  top: 66px;
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateY(-20px) scale(1.05);
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

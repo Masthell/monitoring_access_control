@@ -1,0 +1,131 @@
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.login-content {
+  width: 100%;
+  text-align: center;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  height: 80px;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 1em #1f5622);
+}
+
+.logo-section h1 {
+  font-size: 2.5em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.subtitle {
+  color: #d1d5db;
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.login-form {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-link {
+  color: #818cf8;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.forgot-link:hover {
+  color: #a5b4fc;
+}
+
+.input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  color: white;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: #646cff;
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.2);
+}
+
+.login-button {
+  width: 100% !important;
+  background: linear-gradient(
+    135deg,
+    #33a728 0%,
+    #2b8c20 100%
+  ) !important; /* основной цвет #33a728 */
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+
+.login-button:hover {
+  background: linear-gradient(
+    135deg,
+    #2b8c20 0%,
+    #22701a 100%
+  ) !important; /* темнее при наведении */
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(51, 167, 40, 0.3) !important;
+}
+.signup-section {
+  text-align: center;
+}
+
+.signup-text {
+  color: #d1d5db;
+  font-size: 0.95em;
+  margin: 0;
+}
+
+.signup-link {
+  color: #818cf8;
+  font-weight: 600;
+}
+
+.signup-link:hover {
+  color: #a5b4fc;
+}

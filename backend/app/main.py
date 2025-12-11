@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from contextlib import asynccontextmanager
 from app.core.error_handlers import setup_exception_handlers
 from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 
 # Управление событиями запуска и выключения приложений
 @asynccontextmanager
@@ -26,25 +27,16 @@ app = FastAPI(
 setup_exception_handlers(app)
 
 
-# тестовый эндпоинт
-@app.get("/health")
-async def health_check(db: AsyncSession = Depends(get_db)):
-    """Проверка здоровья приложения"""
-    try:
-        await db.execute(text("SELECT 1")) # Тестовый запрос для проверки БД
-        
-        return {
-            "status": "healthy",
-            "database": "connected",
-            "environment": "development",
-            "timestamp": datetime.utcnow().isoformat(),
-        }
-    except Exception as e:
-        return {
-            "status": "unhealthy",
-            "database": "disconnected",
-            "error": str(e)
-        }
+
+# Настройка CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:8000"], 
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
+
 
 # Корневая точка с приветственным сообщением
 @app.get("/")
@@ -82,9 +74,8 @@ async def config_test():
 
 
 # Подключаем роутеры
-from app.routers import users, tickets, auth, admin
+from app.routers import users, auth, admin
 
 app.include_router(users.router, prefix="/api")
-app.include_router(tickets.router, prefix="/api")
 app.include_router(auth.router, prefix="/auth") 
 app.include_router(admin.router, prefix="/api")
